@@ -9,6 +9,7 @@ variables:
   
 pool:
   vmImage: 'ubuntu-latest'
+  parallel: 3
 
 steps:
 - task: Docker@2
