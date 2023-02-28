@@ -16,7 +16,7 @@ steps:
   inputs:
     command: build
     containerRegistry: 'dockerhub'
-    repository: 'dockerhub_username/repository_name'
+    repository: 'azizurehmankhan/postgres-test-app'
     dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     tags: |
       $(tag)
@@ -25,6 +25,6 @@ steps:
   inputs:
     command: push
     containerRegistry: 'dockerhub'
-    repository: 'dockerhub_username/repository_name'
+    repository: 'azizurehmankhan/postgres-test-app'
     tags: |
       $(tag)
