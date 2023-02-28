@@ -28,6 +28,7 @@ steps:
     repository: 'azizurehmankhan/postgres-test-app'
     tags: |
       $(tag)
-  containerRegistryType: 'Container Registry'
   dockerRegistryEndpoint: 'dockerhub'
+  containerRepository: 'azizurehmankhan/postgres-test-app'
+  containerTag: 'latest'
 
