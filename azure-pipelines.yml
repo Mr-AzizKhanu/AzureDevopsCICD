@@ -6,45 +6,6 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- task: Docker@2
-  displayName: 'Build Docker image'
-  inputs:
-    command: build
-    containerRegistry: 'dockerhub'
-    repository: 'azizurehmankhan/postgres-test-app'
-    dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-    tags: |
-      $(tag)
-- task: Docker@2
-  displayName: 'Push Docker image to Docker Hub'
-  inputs:
-    command: push
-    containerRegistry: 'dockerhub'
-    repository: 'azizurehmankhan/postgres-test-app'
-    tags: |
-      $(tag)
-    containerUsername: 'azizurehmankhan'
-    containerPassword: 'aziz5050r'
-    email: 'azizurehman.khan@devsinc.com'
-
-
-
-
-
-
-trigger:
-- main
-
-resources:
-- repo: self
-
-variables:
-  tag: '$(Build.BuildId)'
   
 pool:
   vmImage: 'ubuntu-latest'
