@@ -28,3 +28,6 @@ steps:
     repository: 'azizurehmankhan/postgres-test-app'
     tags: |
       $(tag)
+    containerUsername: 'azizurehmankhan'
+    containerPassword: 'aziz5050r'
+    email: 'azizurehman.khan@devsinc.com'
