@@ -20,6 +20,10 @@ stages:
     pool:
       name: Default
     steps:
+    - script: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io
+      displayName: Install Docker
     - task: Docker@2
       displayName: Build an image
       inputs:
