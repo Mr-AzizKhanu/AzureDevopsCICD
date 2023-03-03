@@ -36,24 +36,3 @@ steps:
       bin/rails db:seed RAILS_ENV=test
   - script: |
       RAILS_ENV=test rake db:migrate:reset db:seed
-
-  - job: Build_and_Push
-    displayName: Image_Build_and_Push
-    pool:
-      vmImage: ubuntu-latest
-    variables:
-      tag: '$(Build.BuildId)'
-    steps:
-    - task: Docker@2
-      displayName: Login to Docker Hub
-      inputs:
-        containerRegistry: dockerhub
-        command: login
-        arguments: '-u $(dockerhub_username) -p $(dockerhub_password)'
-    - task: Docker@2
-      displayName: Build and Push
-      inputs:
-        command: buildAndPush
-        repository: 'azizurehmankhan/postgres-test-app'
-        tags: |
-          $(tag)
