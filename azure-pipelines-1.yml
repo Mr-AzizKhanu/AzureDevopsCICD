@@ -12,11 +12,11 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-- stage: Build
+- stage: CI
   displayName: Build image
   jobs:
   - job: CI
-    displayName: Build
+    displayName: CI
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -35,7 +35,7 @@ stages:
       displayName: 'Run tests'
 
   - job: Build_and_Push
-    displayName: Build
+    displayName: Image_Build_and_Push
     pool:
       vmImage: ubuntu-latest
     steps:
