@@ -43,7 +43,7 @@ stages:
       displayName: Login to Docker Hub
       inputs:
         command: login
-        containerRegistry: dockerRegistryServiceConnection1
+        containerRegistry: dockerhub
     - task: Docker@2
       displayName: Build and Push
       inputs:
