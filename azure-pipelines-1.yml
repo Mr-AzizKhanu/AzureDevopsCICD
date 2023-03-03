@@ -5,34 +5,49 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
-  
-services:
-  postgres:
-    image: 'postgres'
-    ports:
-    - '5432:5432'
-    env:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: oms_api_test
+resources:
+- repo: self
 
 variables:
-  RAILS_ENV: 'test'
-  DATABASE_URL: 'postgres://postgres:postgres@localhost:5432/oms_api_test'
+  tag: '$(Build.BuildId)'
 
-steps:
-  - checkout: self
-  - task: UseRubyVersion@0
-    inputs:
-      versionSpec: '2.7.1'
-  - script: |
-      gem install bundler
-      bundle install
-  - script: |
-      bin/rails db:create RAILS_ENV=test
-      bin/rails db:migrate RAILS_ENV=test
-      bin/rails db:seed RAILS_ENV=test
-  - script: |
-      RAILS_ENV=test rake db:migrate:reset db:seed
+stages:
+- stage: CI
+  displayName: Build image
+  jobs:
+  - job: CI
+    displayName: CI
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - script: |
+        gem install bundler
+        bundle install
+      displayName: 'Install dependencies'
+
+    - script: |
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+      displayName: 'Database setup'
+
+    - script: |
+        bundle exec rspec
+      displayName: 'Run tests'
+
+  - job: Build_and_Push
+    displayName: Image_Build_and_Push
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Login to Docker Hub
+      inputs:
+        command: login
+        containerRegistry: dockerhub
+    - task: Docker@2
+      displayName: Build and Push
+      inputs:
+        command: buildAndPush
+        repository: azizurehmankhan/postgres-test-app
+        tags: |
+          $(tag)
