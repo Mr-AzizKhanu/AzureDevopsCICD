@@ -34,7 +34,7 @@ stages:
         bundle exec rspec
       displayName: 'Run tests'
 
-  - job: Build-and-Push
+  - job: Build_and_Push
     displayName: Build
     pool:
       vmImage: ubuntu-latest
