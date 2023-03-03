@@ -15,21 +15,39 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
-  - job: Build
+  - job: CI
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - script: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+      displayName: 'Install dependencies'
+
+    - script: |
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+      displayName: 'Database setup'
+
+    - script: |
+        bundle exec rspec
+      displayName: 'Run tests'
+
+  - job: Build-and-Push
     displayName: Build
     pool:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: Login to Docker Hub
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        command: login
+        containerRegistry: dockerRegistryServiceConnection1
+    - task: Docker@2
+      displayName: Build and Push
+      inputs:
+        command: buildAndPush
+        repository: azizurehmankhan/postgres-test-app
         tags: |
           $(tag)
-          
-    - script: |
-        docker images
-      displayName: List Images
-
-   
