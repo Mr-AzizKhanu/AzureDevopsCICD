@@ -18,7 +18,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      name: Default
+      vmImage: ubuntu-latest
     steps:
     - script: |
         sudo apt-get update
