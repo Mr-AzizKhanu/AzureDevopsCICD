@@ -21,6 +21,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - script: |
+        sudo chmod a+w /var/lib/gems/3.0.0
         gem install bundler
         bundle install
       displayName: 'Install dependencies'
@@ -48,6 +49,6 @@ stages:
       displayName: Build and Push
       inputs:
         command: buildAndPush
-        repository: azizurehmankhan/postgres-test-app
+        repository: $(Repository)
         tags: |
           $(tag)
